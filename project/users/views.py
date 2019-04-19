@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from django.contrib.auth.models import User
 
 
 def register(request):
@@ -17,11 +18,20 @@ def register(request):
     return render(request, 'users/register.html', {'form': form, 'title':'Register'})
 
 @login_required
-def profile(request):
-    return render(request, 'users/profile.html', {'title':'Profile'})
+def profile(request, username=None):
+    u = request.user
+    if username:
+        user = User.objects.get(username=username)
+    else:
+        user = request.user
+
+    args = {'user': user, 'title': f'{user}', 'u': u}
+
+    return render(request, 'users/profile.html', args)
 
 @login_required
 def update_profile(request):
+    u = request.user
     if request.method == 'POST':
         u_update_form = UserUpdateForm(request.POST, instance=request.user)
         p_update_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -37,7 +47,8 @@ def update_profile(request):
     context = {
         'u_update_form': u_update_form,
         'p_update_form': p_update_form,
-        'title': 'Profile'
+        'title': 'Profile',
+        'u': u
     }
 
     return render(request, 'users/update_prof.html', context)

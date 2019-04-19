@@ -1,11 +1,35 @@
 {% extends "temps/base.html" %}
 {% block content %}
-    <div class="container content-section">
-        <img class="account-img img-thumbnail" src="{{ user.profile.image.url }}">
-        <div class="">
-            <h2 class="account-heading">{{ user.username }}</h2>
-            <hr>
-            <p>{{user.profile.bio}}</p>
+<div class="card col-md-9">
+    <row class="media">
+        <img src="{{ user.profile.image.url }}" class="prof-pic img-thumbnail" alt="profile picture">
+        <div class="vl"></div>
+        <div class="container profile-info">
+            <h2 class="account-header">{{ user.username }}</h2>
+            <div class="contact-info">
+                <div class="not-buttons">
+                    <div class="media">
+                        <i class="material-icons" style="font-size:22px">email</i>
+                        <small>{{ user.email }}</small>
+                    </div>
+                    <div class="media">
+                        <i class="material-icons" style="font-size:22px">phone</i>
+                        <small>{{ user.profile.phone }}</small>
+                    </div>
+                </div>
+                <div class="sm-buttons">
+                    <a href="{{ user.profile.twitter }}" class="fa fa-twitter"></a>
+                    <a href="{{ user.profile.linkedin }}" class="fa fa-linkedin"></a>                       
+                    <a href="{{ user.profile.facebook }}" class="fa fa-facebook"></a>
+                    <a href="{{ user.profile.github }}" class='fa fa-github'></a>
+                </div>
+            </div>                        
         </div>
-    </div>
+    </row>
+    <div class="hrh"></div>
+    <row>
+        <h5>About</h5>
+        <p>{{ user.profile.bio }}</p>
+    </row>                
+</div>
 {% endblock content %}
